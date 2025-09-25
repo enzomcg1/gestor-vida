@@ -85,6 +85,8 @@ Build Command: npm install && npx prisma generate && npx prisma db push && npm r
 Start Command: npm start
 ```
 
+**⚠️ IMPORTANTE**: El comando `build` en `package.json` debe usar `next build` (sin `--turbopack`) para producción.
+
 ### 5. Configurar el Plan
 
 - **Plan**: Free (para empezar)
