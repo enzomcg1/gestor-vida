@@ -10,7 +10,7 @@ export async function PATCH(
     const body = await request.json()
     
     // Si se actualiza la frecuencia o día del mes, recalcular nextDueDate
-    let updateData = { ...body }
+    const updateData = { ...body }
     if (body.frequency || body.dayOfMonth !== undefined) {
       const current = await prisma.recurringTransaction.findUnique({
         where: { id }

@@ -30,7 +30,7 @@ export default function SignInPage() {
         router.push('/')
         router.refresh()
       }
-    } catch (error) {
+    } catch {
       setError('Error al iniciar sesión')
     } finally {
       setLoading(false)

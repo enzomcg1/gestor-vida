@@ -63,7 +63,7 @@ export default function InformesPage() {
       ])
 
       if (tasksRes.ok && routinesRes.ok && transactionsRes.ok && recurringRes.ok && savingsRes.ok && categoriesRes.ok) {
-        const [tasks, routines, transactions, recurring, savings, categories] = await Promise.all([
+        const [tasks, routines, transactions, , savings, categories] = await Promise.all([
           tasksRes.json(),
           routinesRes.json(),
           transactionsRes.json(),
@@ -251,7 +251,7 @@ export default function InformesPage() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Rutinas Completadas</p>
               <p className="text-2xl font-bold text-green-600">{data?.routines.completedThisPeriod || 0}</p>
-              <p className="text-xs text-gray-500">{data?.routines.consistency.toFixed(1) || 0}% consistencia</p>
+              <p className="text-xs text-gray-500">{data?.routines?.consistency?.toFixed(1) || 0}% consistencia</p>
             </div>
           </div>
         </div>
@@ -277,7 +277,7 @@ export default function InformesPage() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Ahorros Acumulados</p>
               <p className="text-2xl font-bold text-green-600">{formatGuaranies(data?.savings.totalAmount || 0)}</p>
-              <p className="text-xs text-gray-500">{data?.savings.progress.toFixed(1) || 0}% progreso</p>
+              <p className="text-xs text-gray-500">{data?.savings?.progress?.toFixed(1) || 0}% progreso</p>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default function InformesPage() {
             <div className="text-xs text-gray-500">{data?.routines.active || 0} activas</div>
           </div>
           <div className="text-center p-4 bg-purple-50 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">{data?.routines.consistency.toFixed(1) || 0}%</div>
+            <div className="text-2xl font-bold text-purple-600">{data?.routines?.consistency?.toFixed(1) || 0}%</div>
             <div className="text-sm text-gray-600">Consistencia</div>
             <div className="text-xs text-gray-500">Rutinas completadas</div>
           </div>
@@ -309,14 +309,14 @@ export default function InformesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Gastos por Categoría</h2>
-          {data?.finances.expensesByCategory.length === 0 ? (
+          {(data?.finances?.expensesByCategory?.length || 0) === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <p>No hay datos de gastos</p>
               <p className="text-sm">Agrega transacciones para ver el análisis</p>
             </div>
           ) : (
             <div className="space-y-4">
-              {data.finances.expensesByCategory.map((category, index) => (
+              {data?.finances?.expensesByCategory?.map((category, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div 
@@ -337,7 +337,7 @@ export default function InformesPage() {
 
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Tendencias de Ahorro</h2>
-          {data?.savings.totalGoals === 0 ? (
+          {(data?.savings?.totalGoals || 0) === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <p>No hay datos de ahorro</p>
               <p className="text-sm">Crea metas de ahorro para ver las tendencias</p>
@@ -346,21 +346,21 @@ export default function InformesPage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Progreso total</span>
-                <span className="text-sm font-semibold text-gray-900">{data.savings.progress.toFixed(1)}%</span>
+                <span className="text-sm font-semibold text-gray-900">{data?.savings?.progress?.toFixed(1)}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-green-500 h-2 rounded-full" 
-                  style={{ width: `${data.savings.progress}%` }}
+                  style={{ width: `${data?.savings?.progress || 0}%` }}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4 pt-4">
                 <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <div className="text-lg font-bold text-green-600">{data.savings.activeGoals}</div>
+                  <div className="text-lg font-bold text-green-600">{data?.savings?.activeGoals}</div>
                   <div className="text-xs text-gray-600">Metas Activas</div>
                 </div>
                 <div className="text-center p-3 bg-purple-50 rounded-lg">
-                  <div className="text-lg font-bold text-purple-600">{data.savings.completedGoals}</div>
+                  <div className="text-lg font-bold text-purple-600">{data?.savings?.completedGoals}</div>
                   <div className="text-xs text-gray-600">Metas Completadas</div>
                 </div>
               </div>
@@ -376,21 +376,21 @@ export default function InformesPage() {
           <div className="text-center">
             <div className="text-3xl mb-2">🎯</div>
             <h3 className="font-medium text-gray-900">Consistencia</h3>
-            <p className="text-sm text-gray-600 mt-1">{data?.routines.consistency.toFixed(1) || 0}%</p>
+            <p className="text-sm text-gray-600 mt-1">{data?.routines?.consistency?.toFixed(1) || 0}%</p>
             <p className="text-xs text-gray-500">Rutinas completadas</p>
           </div>
           <div className="text-center">
             <div className="text-3xl mb-2">⚡</div>
             <h3 className="font-medium text-gray-900">Eficiencia</h3>
             <p className="text-sm text-gray-600 mt-1">
-              {data?.tasks.total ? ((data.tasks.completed / data.tasks.total) * 100).toFixed(1) : 0}%
+              {data?.tasks?.total ? ((data?.tasks?.completed || 0) / (data?.tasks?.total || 1) * 100).toFixed(1) : 0}%
             </p>
             <p className="text-xs text-gray-500">Tareas completadas</p>
           </div>
           <div className="text-center">
             <div className="text-3xl mb-2">📈</div>
             <h3 className="font-medium text-gray-900">Progreso</h3>
-            <p className="text-sm text-gray-600 mt-1">{data?.savings.progress.toFixed(1) || 0}%</p>
+            <p className="text-sm text-gray-600 mt-1">{data?.savings?.progress?.toFixed(1) || 0}%</p>
             <p className="text-xs text-gray-500">Metas de ahorro alcanzadas</p>
           </div>
         </div>
@@ -400,55 +400,55 @@ export default function InformesPage() {
       <div className="bg-white p-6 rounded-lg shadow-sm border">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Recomendaciones Personalizadas</h2>
         <div className="space-y-4">
-          {data?.tasks.pending > 5 && (
+          {(data?.tasks?.pending || 0) > 5 && (
             <div className="flex items-start space-x-3 p-4 bg-yellow-50 rounded-lg">
               <div className="text-yellow-500 text-xl">⚠️</div>
               <div>
                 <h3 className="font-medium text-yellow-900">Tienes muchas tareas pendientes</h3>
                 <p className="text-sm text-yellow-700 mt-1">
-                  Tienes {data.tasks.pending} tareas pendientes. Considera priorizar las más importantes.
+                  Tienes {data?.tasks?.pending || 0} tareas pendientes. Considera priorizar las más importantes.
                 </p>
               </div>
             </div>
           )}
 
-          {data?.routines.consistency < 50 && data?.routines.active > 0 && (
+          {(data?.routines?.consistency || 0) < 50 && (data?.routines?.active || 0) > 0 && (
             <div className="flex items-start space-x-3 p-4 bg-red-50 rounded-lg">
               <div className="text-red-500 text-xl">📉</div>
               <div>
                 <h3 className="font-medium text-red-900">Baja consistencia en rutinas</h3>
                 <p className="text-sm text-red-700 mt-1">
-                  Tu consistencia es del {data.routines.consistency.toFixed(1)}%. Intenta completar al menos una rutina diaria.
+                  Tu consistencia es del {data?.routines?.consistency?.toFixed(1) || 0}%. Intenta completar al menos una rutina diaria.
                 </p>
               </div>
             </div>
           )}
 
-          {data?.finances.balance < 0 && (
+          {(data?.finances?.balance || 0) < 0 && (
             <div className="flex items-start space-x-3 p-4 bg-red-50 rounded-lg">
               <div className="text-red-500 text-xl">💸</div>
               <div>
                 <h3 className="font-medium text-red-900">Balance negativo</h3>
                 <p className="text-sm text-red-700 mt-1">
-                  Tu balance es negativo ({formatGuaranies(data.finances.balance)}). Revisa tus gastos y considera reducir algunos.
+                  Tu balance es negativo ({formatGuaranies(data?.finances?.balance || 0)}). Revisa tus gastos y considera reducir algunos.
                 </p>
               </div>
             </div>
           )}
 
-          {data?.savings.progress > 0 && data?.savings.progress < 25 && (
+          {(data?.savings?.progress || 0) > 0 && (data?.savings?.progress || 0) < 25 && (
             <div className="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg">
               <div className="text-blue-500 text-xl">🏦</div>
               <div>
                 <h3 className="font-medium text-blue-900">Progreso lento en ahorros</h3>
                 <p className="text-sm text-blue-700 mt-1">
-                  Has ahorrado {data.savings.progress.toFixed(1)}% de tus metas. Considera aumentar tus contribuciones.
+                  Has ahorrado {data?.savings?.progress?.toFixed(1) || 0}% de tus metas. Considera aumentar tus contribuciones.
                 </p>
               </div>
             </div>
           )}
 
-          {data?.tasks.completed > 0 && data?.routines.consistency > 70 && data?.finances.balance >= 0 && (
+          {(data?.tasks?.completed || 0) > 0 && (data?.routines?.consistency || 0) > 70 && (data?.finances?.balance || 0) >= 0 && (
             <div className="flex items-start space-x-3 p-4 bg-green-50 rounded-lg">
               <div className="text-green-500 text-xl">🎉</div>
               <div>
@@ -460,7 +460,7 @@ export default function InformesPage() {
             </div>
           )}
 
-          {data?.tasks.total === 0 && data?.routines.total === 0 && data?.finances.totalExpenses === 0 && (
+          {(data?.tasks?.total || 0) === 0 && (data?.routines?.total || 0) === 0 && (data?.finances?.totalExpenses || 0) === 0 && (
             <div className="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg">
               <div className="text-blue-500 text-xl">🚀</div>
               <div>

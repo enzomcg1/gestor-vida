@@ -40,10 +40,27 @@ export function formatGuaranies(value: number | string): string {
  * @param decimals - Número de decimales a mostrar (por defecto 1)
  * @returns El porcentaje formateado
  */
-export function formatPercentage(value: number, decimals: number = 1): string {
-  if (isNaN(value)) {
+export function formatPercentage(value: number | string, decimals: number = 1): string {
+  const numValue = typeof value === 'string' ? parseFloat(value) : value;
+  
+  if (isNaN(numValue)) {
     return '0%';
   }
   
-  return `${(value * 100).toFixed(decimals)}%`;
+  return `${(numValue * 100).toFixed(decimals)}%`;
+}
+
+/**
+ * Función utilitaria para hacer solicitudes fetch con autenticación
+ * Incluye automáticamente las cookies de sesión
+ */
+export async function authenticatedFetch(url: string, options: RequestInit = {}) {
+  return fetch(url, {
+    ...options,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
 }

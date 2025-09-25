@@ -49,11 +49,11 @@ export default function Dashboard() {
     try {
       setLoading(true)
       const [tasksRes, routinesRes, transactionsRes, recurringRes, savingsRes] = await Promise.all([
-        fetch('/api/tasks'),
-        fetch('/api/routines'),
-        fetch('/api/transactions'),
-        fetch('/api/recurring-transactions'),
-        fetch('/api/savings')
+        fetch('/api/tasks', { credentials: 'include' }),
+        fetch('/api/routines', { credentials: 'include' }),
+        fetch('/api/transactions', { credentials: 'include' }),
+        fetch('/api/recurring-transactions', { credentials: 'include' }),
+        fetch('/api/savings', { credentials: 'include' })
       ])
 
       if (tasksRes.ok && routinesRes.ok && transactionsRes.ok && recurringRes.ok && savingsRes.ok) {
@@ -362,7 +362,7 @@ export default function Dashboard() {
               <div 
                 className="bg-blue-500 h-2 rounded-full" 
                 style={{ 
-                  width: `${data?.tasks.total ? (data.tasks.completed / data.tasks.total) * 100 : 0}%` 
+                  width: `${data?.tasks?.total ? ((data?.tasks?.completed || 0) / (data?.tasks?.total || 1)) * 100 : 0}%` 
                 }}
               />
             </div>
@@ -374,7 +374,7 @@ export default function Dashboard() {
               <div 
                 className="bg-green-500 h-2 rounded-full" 
                 style={{ 
-                  width: `${data?.routines.active ? (data.routines.completedToday / data.routines.active) * 100 : 0}%` 
+                  width: `${data?.routines?.active ? ((data?.routines?.completedToday || 0) / (data?.routines?.active || 1)) * 100 : 0}%` 
                 }}
               />
             </div>
@@ -414,7 +414,7 @@ export default function Dashboard() {
       {/* Metas de ahorro */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Metas de Ahorro</h2>
-        {data?.savings.totalGoals === 0 ? (
+        {(data?.savings?.totalGoals || 0) === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <p>No tienes metas de ahorro configuradas</p>
             <p className="text-sm">Crea tu primera meta para comenzar a ahorrar</p>

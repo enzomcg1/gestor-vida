@@ -86,9 +86,9 @@ export default function FinanzasPage() {
     try {
       setLoading(true)
       const [transactionsRes, recurringRes, categoriesRes] = await Promise.all([
-        fetch('/api/transactions'),
-        fetch('/api/recurring-transactions'),
-        fetch('/api/categories')
+        fetch('/api/transactions', { credentials: 'include' }),
+        fetch('/api/recurring-transactions', { credentials: 'include' }),
+        fetch('/api/categories', { credentials: 'include' })
       ])
 
       if (transactionsRes.ok && recurringRes.ok && categoriesRes.ok) {
@@ -117,6 +117,7 @@ export default function FinanzasPage() {
     try {
       const response = await fetch('/api/transactions', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -172,6 +173,7 @@ export default function FinanzasPage() {
     try {
       const response = await fetch('/api/recurring-transactions', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -252,6 +254,7 @@ export default function FinanzasPage() {
     try {
       const response = await fetch('/api/recurring-transactions/process', {
         method: 'POST',
+        credentials: 'include',
       })
 
       if (response.ok) {

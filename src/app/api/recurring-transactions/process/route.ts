@@ -50,7 +50,8 @@ export async function POST() {
           type: recurring.type,
           date: today,
           categoryId: recurring.categoryId,
-          recurringTransactionId: recurring.id
+          recurringTransactionId: recurring.id,
+          userId: recurring.userId
         }
       })
 

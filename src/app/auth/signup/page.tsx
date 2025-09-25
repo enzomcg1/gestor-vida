@@ -51,7 +51,7 @@ export default function SignUpPage() {
         const data = await response.json()
         setError(data.error || 'Error al crear la cuenta')
       }
-    } catch (error) {
+    } catch {
       setError('Error al crear la cuenta')
     } finally {
       setLoading(false)

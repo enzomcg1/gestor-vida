@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 
 const navItems = [
@@ -15,7 +15,14 @@ const navItems = [
 
 export default function Navigation() {
   const pathname = usePathname()
+  const router = useRouter()
   const { data: session, status } = useSession()
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false })
+    router.push('/')
+    router.refresh()
+  }
 
   if (status === 'loading') {
     return (
@@ -90,7 +97,7 @@ export default function Navigation() {
                 Hola, {session.user?.name || session.user?.email}
               </span>
               <button
-                onClick={() => signOut()}
+                onClick={handleSignOut}
                 className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md"
               >
                 Cerrar Sesión

@@ -34,12 +34,17 @@ export default function TareasPage() {
   const fetchTasks = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/tasks')
+      const response = await fetch('/api/tasks', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       if (response.ok) {
         const data = await response.json()
         setTasks(data)
       } else {
-        console.error('Error fetching tasks')
+        console.error('Error fetching tasks:', response.status, response.statusText)
       }
     } catch (error) {
       console.error('Error fetching tasks:', error)
