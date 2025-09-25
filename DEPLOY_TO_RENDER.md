@@ -81,7 +81,7 @@ NEXT_TELEMETRY_DISABLED = 1
 ### 4. Configurar Comandos de Build y Start
 
 ```
-Build Command: npm install && npx prisma generate && npx prisma db push
+Build Command: npm install && npx prisma generate && npx prisma db push && npm run build
 Start Command: npm start
 ```
 
