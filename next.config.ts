@@ -12,8 +12,6 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // Configuración para producción
-  output: 'standalone',
   // Configuración de imágenes
   images: {
     domains: ['localhost'],
